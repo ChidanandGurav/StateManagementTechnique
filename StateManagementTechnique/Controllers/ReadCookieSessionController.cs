@@ -1,0 +1,36 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace StateManagementTechnique.Controllers
+{
+    public class ReadCookieSessionController : Controller
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ReadCookieSessionController(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor= httpContextAccessor;
+        }
+
+        public IActionResult ReadCookie()
+        {
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                //read value from Cookies
+                ViewBag.Email = _httpContextAccessor.HttpContext.Request.Cookies["email"];
+            }
+            return View();
+        }
+
+        public IActionResult ReadSession()
+        {
+            ViewBag.Email = HttpContext.Session.GetString("email");
+            int? role=HttpContext.Session.GetInt32("roleId");
+            return View();
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
